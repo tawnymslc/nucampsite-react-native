@@ -1,7 +1,8 @@
 import RenderCampsite from '../features/campsites/RenderCampsite';
 
-const CampsiteInfoScreen = (props) => {
-    return <RenderCampsite campsite={props.campsite}/>
-}
+const CampsiteInfoScreen = ({ route }) => {
+    const { campsite } = route.params;
+    return <RenderCampsite campsite={campsite} />;
+};
 
 export default CampsiteInfoScreen;
