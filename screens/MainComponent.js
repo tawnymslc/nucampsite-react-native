@@ -4,6 +4,7 @@ import AboutScreen from './AboutScreen';
 import ContactScreen from './ContactScreen';
 import CampsiteInfoScreen from './CampsiteInfoScreen';
 import DirectoryScreen from './DirectoryScreen';
+import FavoritesScreen from './FavoritesScreen';
 import ReservationScreen from './ReservationScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { 
@@ -108,6 +109,29 @@ const ReservationNavigator = () => {
                     headerLeft: () => (
                         <Icon 
                             name='tree'
+                            type='font-awesome'
+                            iconStyle={styles.stackIcon}
+                            onPress={() => navigation.toggleDrawer()}
+                        />
+                    ) 
+                })}
+            />
+        </Stack.Navigator>
+    );
+};
+
+const FavoritesNavigator = () => {
+    const Stack = createStackNavigator();
+    return (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen
+                name='Favorites'
+                component={FavoritesScreen}
+                options={({ navigation }) => ({ 
+                    title: 'Favorite Campsite',
+                    headerLeft: () => (
+                        <Icon 
+                            name='heart'
                             type='font-awesome'
                             iconStyle={styles.stackIcon}
                             onPress={() => navigation.toggleDrawer()}
@@ -229,6 +253,22 @@ const Main = () => {
                         drawerIcon: ({ color }) => (
                             <Icon
                                 name='tree'
+                                type='font-awesome'
+                                size={24}
+                                iconStyle={{ width: 24 }}
+                                color={color}
+                            />
+                        )
+                    }}
+                />
+                <Drawer.Screen
+                    name='Favorites'
+                    component={FavoritesNavigator}
+                    options={{ 
+                        title: 'My Favorites',
+                        drawerIcon: ({ color }) => (
+                            <Icon
+                                name='heart'
                                 type='font-awesome'
                                 size={24}
                                 iconStyle={{ width: 24 }}
