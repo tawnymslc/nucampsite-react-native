@@ -6,6 +6,7 @@ import RenderCampsite from '../features/campsites/RenderCampsite';
 import { useDispatch } from 'react-redux';
 import { toggleFavorite } from '../features/favorites/favoritesSlice';
 import { postComment } from '../features/comments/commentsSlice';
+import * as Animatable from 'react-native-animatable';
 
 const CampsiteInfoScreen = ({ route }) => {
     const { campsite } = route.params;
@@ -52,82 +53,86 @@ const CampsiteInfoScreen = ({ route }) => {
     };
 
     return (
-        <>
-        <FlatList
-            data={comments.commentsArray.filter(
-                (comment) => comment.campsiteId === campsite.id
-            )}
-            renderItem={renderCommentItem}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={{
-                marginHorizontal: 20,
-                paddingVertical: 20
-            }}
-            ListHeaderComponent={
-                <>
-                    <RenderCampsite
-                        campsite={campsite}
-                        isFavorite={favorites.includes(campsite.id)}
-                        markFavorite={() => dispatch(toggleFavorite(campsite.id))}
-                        onShowModal={() => setShowModal(!showModal)}
-                    />
-                    <Text style={styles.commentsTitle}>Comments</Text>
-                </>
-            }
-        />
-        <Modal
-            animationType='slide'
-            transparent={false}
-            visible={showModal}
-            onRequestClose={() => setShowModal(!showModal)}
+        <Animatable.View
+                animation='fadeInUp'
+                duration={2000}
+                delay={1000}
         >
-            <View style={styles.modal}>
-                <Rating
-                    showRating
-                    startingValue={rating}
-                    imageSize={40}
-                    onFinishRating={rating => setRating(rating)}
-                    style={{ paddingVertical: 10 }}
-                >
-                </Rating>
-                <Input
-                    placeholder='Author'
-                    leftIcon='user-o'
-                    leftIconContainerStyle={{ paddingRight: 10 }}
-                    onChangeText={author => setAuthor(author)}
-                    value
-                >
-                </Input>
+            <FlatList
+                data={comments.commentsArray.filter(
+                    (comment) => comment.campsiteId === campsite.id
+                )}
+                renderItem={renderCommentItem}
+                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={{
+                    marginHorizontal: 20,
+                    paddingVertical: 20
+                }}
+                ListHeaderComponent={
+                    <>
+                        <RenderCampsite
+                            campsite={campsite}
+                            isFavorite={favorites.includes(campsite.id)}
+                            markFavorite={() => dispatch(toggleFavorite(campsite.id))}
+                            onShowModal={() => setShowModal(!showModal)}
+                        />
+                        <Text style={styles.commentsTitle}>Comments</Text>
+                    </>
+                }
+            />
+            <Modal
+                animationType='slide'
+                transparent={false}
+                visible={showModal}
+                onRequestClose={() => setShowModal(!showModal)}
+            >
+                <View style={styles.modal}>
+                    <Rating
+                        showRating
+                        startingValue={rating}
+                        imageSize={40}
+                        onFinishRating={rating => setRating(rating)}
+                        style={{ paddingVertical: 10 }}
+                    >
+                    </Rating>
+                    <Input
+                        placeholder='Author'
+                        leftIcon='user-o'
+                        leftIconContainerStyle={{ paddingRight: 10 }}
+                        onChangeText={author => setAuthor(author)}
+                        value
+                    >
+                    </Input>
 
-                <Input
-                    placeholder='Comment'
-                    leftIcon='comment-o'
-                    leftIconContainerStyle={{ paddingRight: 10 }}
-                    onChangeText={text => setText(text)}
-                    value
-                >
-                </Input>
+                    <Input
+                        placeholder='Comment'
+                        leftIcon='comment-o'
+                        leftIconContainerStyle={{ paddingRight: 10 }}
+                        onChangeText={text => setText(text)}
+                        value
+                    >
+                    </Input>
 
-                <View style={{ margin: 10}}>
-                    <Button
-                        title='Submit'
-                        color='#5637DD' 
-                        onPress={() => {
-                            handleSubmit();
-                            resetForm();
-                        }}/>
+                    <View style={{ margin: 10}}>
+                        <Button
+                            title='Submit'
+                            color='#5637DD' 
+                            onPress={() => {
+                                handleSubmit();
+                                resetForm();
+                            }}/>
+                    </View>
+
+                    <View style={{margin: 10}}>
+                        <Button 
+                            title='Cancel'
+                            color='#808080'
+                            onPress={() => setShowModal(!showModal)}    
+                        />
+                    </View>
                 </View>
-
-                <View style={{margin: 10}}>
-                    <Button 
-                        title='Cancel'
-                        color='#808080'
-                        onPress={() => setShowModal(!showModal)}    
-                    />
-                </View>
-            </View>
-        </Modal>
-        </>
+            </Modal>
+        </Animatable.View>
     );
 };
 
